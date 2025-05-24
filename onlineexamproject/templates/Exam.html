@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/quiz.css')}}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <title>Exam</title>
+</head>
+<body>
+<header>
+    <nav class="navbar navbar-expand-md">
+        <span class="text">The Online Exam System</span>
+        <div class="ml-auto d-flex align-items-center">
+            <span id="timer" class="mr-3"></span>
+            <!-- Logout Button (Initially Hidden) -->
+            <a href="/logout" id="logoutButton" class="btn btn-danger btn-sm" style="display: none;">Logout</a>
+        </div>
+    </nav>
+</header>
+
+<main>
+    <br><br>
+    <div class="container">
+        <div class="card mt-5">
+            <div class="card-body">
+                <h2 class="card-title mb-4 text-center" id="title" style="color: #5f9ea0;">Exam Test</h2>
+                <hr class="line">
+
+                <div id="mainContent">
+                    <h5 class="text-center">
+                        You have 5 minutes to complete this quiz. The quiz will auto-submit when time runs out.
+                    </h5>
+                    <div class="text-center mt-3">
+                        <button id="startQuiz" class="btn text-white rounded-pill" style="background: #5f9ea0;">Start Quiz</button>
+                    </div>
+                </div>
+
+                <!-- Quiz Content -->
+                <div id="quizBox" style="display: none;">
+                    <div id="questionContainer">
+                        {% for q in questions %}
+                        <div class="question-block" data-index="{{ loop.index0 }}" data-correct="{{ q[6] }}"style="{% if not loop.first %}display:none;{% endif %}">
+                            <h5>{{ loop.index }}. {{ q[1] }}</h5>
+                            <div class="options">
+                                <button class="option btn btn-outline-primary mb-1">{{ q[2] }}</button><br>
+                                <button class="option btn btn-outline-primary mb-1">{{ q[3] }}</button><br>
+                                <button class="option btn btn-outline-primary mb-1">{{ q[4] }}</button><br>
+                                <button class="option btn btn-outline-primary mb-1">{{ q[5] }}</button>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+
+                    <!-- Score during quiz is hidden -->
+                    <div class="text-center mt-4" style="display: none;">
+                        <h5>Score: <span id="score">0</span></h5>
+                    </div>
+
+                    <!-- Final score shown only after quiz -->
+                    <div id="quizEnd" class="text-center mt-4" style="display: none;">
+                        <h4>Quiz Completed!</h4>
+                        <p>Your final score is: <strong><span id="finalScore"></span></strong></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br/>
+</main>
+
+<footer>
+    <p class="text-center">&copy; The Online Exam System</p>
+</footer>
+
+<script>
+    let score = 0;
+    let currentQuestion = 0;
+    const questions = document.querySelectorAll(".question-block");
+    let timerInterval;
+
+    function startTimer(duration) {
+        let time = duration;
+        const display = document.getElementById("timer");
+
+        timerInterval = setInterval(() => {
+            const minutes = String(Math.floor(time / 60)).padStart(2, "0");
+            const seconds = String(time % 60).padStart(2, "0");
+            display.textContent = `${minutes}:${seconds}`;
+
+            if (--time < 0) {
+                clearInterval(timerInterval);
+                autoSubmitQuiz();
+            }
+        }, 1000);
+    }
+
+    function autoSubmitQuiz() {
+        if (currentQuestion < questions.length) {
+            questions[currentQuestion].style.display = "none";
+        }
+    
+        document.getElementById("quizEnd").style.display = "block";
+        document.getElementById("finalScore").textContent = score + " / " + questions.length;
+    
+        // Show the Logout Button
+        document.getElementById("logoutButton").style.display = "inline-block";
+    
+        const result = {
+            input: score.toString()
+        };
+    
+        // ✅ Send result to Flask backend
+        fetch("/exam", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(result)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.output && data.link) {
+                window.location.href = `/${data.link}/${data.output}`;
+            }
+        })
+        .catch(error => {
+            console.error("❌ Error sending exam result:", error);
+        });
+    }
+    
+    let tabSwitchCount = 0;
+
+    // Detect tab switch
+    document.addEventListener('visibilitychange', function () {
+        if (document.visibilityState === 'hidden') {
+            tabSwitchCount++;
+
+            // Send the tab switch count to the backend
+            fetch('/log_tab_switch', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ tabSwitchCount: tabSwitchCount })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data.message);
+
+                    // Handle actions based on the response
+                    if (data.action === 'warn') {
+                        alert('Warning: You switched tabs!');
+                    } else if (data.action === 'fail') {
+                        alert('You have been failed due to multiple tab switches.');
+                        window.location.href = '/showResultFail/TabSwitchViolation';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error logging tab switch:', error);
+                });
+        }
+    });
+
+    document.getElementById("startQuiz").addEventListener("click", function () {
+        document.getElementById("mainContent").style.display = "none";
+        document.getElementById("quizBox").style.display = "block";
+        startTimer(300); // 5 minutes
+
+        questions.forEach((block, index) => {
+            const correct = block.getAttribute("data-correct").trim().toLowerCase();
+            const options = block.querySelectorAll(".option");
+
+            options.forEach(button => {
+                button.addEventListener("click", function () {
+                    const selected = this.textContent.trim().toLowerCase();
+
+                    options.forEach(opt => opt.disabled = true);
+
+                    if (selected === correct) {
+                        score++;
+                    }
+
+                    setTimeout(() => {
+                        block.style.display = "none";
+                        currentQuestion++;
+                        if (currentQuestion < questions.length) {
+                            questions[currentQuestion].style.display = "block";
+                        } else {
+                            clearInterval(timerInterval);
+                            autoSubmitQuiz();
+                        }
+                    }, 500);
+                });
+            });
+        });
+    });
+</script>
+
+</body>
+</html>
+``` 

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin - Exam Results</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Styles -->
+    <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/TrStudent.css')}}">
+
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<section id="sidebar" class="collapsed">
+    <a href="#" class="brand">
+        <span class="text">Admin Dashboard</span>
+    </a>
+    <ul class="side-menu top">
+        <li>
+            <a href="{{ url_for('adminStudents') }}">
+                <i class='bx bxs-book'></i>
+                <span class="text">Exam Questions</span>
+            </a>
+        </li>
+        <li>
+            <a href="{{ url_for('adminStudents') }}">
+                <i class='bx bxs-group'></i>
+                <span class="text">Students</span>
+            </a>
+        </li>
+        <li>
+            <a href="{{ url_for('adminResults') }}" class="active">
+                <i class='bx bxs-graduation'></i>
+                <span class="text">Exam Results</span>
+            </a>
+        </li>
+    </ul>
+    <ul class="side-menu bottom">
+        <li class="logout">
+            <a href="{{ url_for('logout') }}">
+                <i class='bx bxs-log-out-circle'></i>
+                <span class="text">Logout</span>
+            </a>
+        </li>
+    </ul>
+</section>
+
+<!-- Content -->
+<section id="content">
+    <nav>
+        <i class='bx bx-menu' id="menu-toggle"></i>
+        <span class="text">The Online Exam System</span>
+        <div>
+            <a href="#">
+                <i class='bx bxs-user'></i>
+                <span class="text">Profile</span>
+            </a>
+        </div>
+    </nav>
+    <main>
+        <div class="head-title">
+            <div class="left">
+                <h1>Dashboard</h1>
+                <ul class="breadcrumb">
+                    <li><a href="#">Dashboard</a></li>
+                    <li><i class='bx bx-chevron-right'></i></li>
+                    <li><a class="active" href="#">Exam Results</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="table-data">
+            <div class="order">
+                <div class="head">
+                    <h3>Student Exam Result Records</h3>
+                </div>
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Student Name</th>
+                            <th>Subject</th>
+                            <th>Marks</th>
+                            <th>Grade</th>
+                            <th>Exam Date</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if results %}
+                            {% for result in results %}
+                            <tr>
+                                <td>{{ result[0] }}</td>
+                                <td>{{ result[1] }}</td>
+                                <td>{{ result[2] }}</td>
+                                <td>{{ result[3] }}</td>
+                                <td>{{ result[4] }}</td>
+                                <td>
+                                    {% if result[5] == 'Pass' %}
+                                        <span class="badge badge-success"><i class='bx bx-check-circle'></i> Pass</span>
+                                    {% else %}
+                                        <span class="badge badge-danger"><i class='bx bx-x-circle'></i> Fail</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr><td colspan="6" class="text-center">No results available.</td></tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+</section>
+
+<script src="{{ url_for('static', filename='js/TrStudent.js') }}"></script>
+
+</body>
+</html>
