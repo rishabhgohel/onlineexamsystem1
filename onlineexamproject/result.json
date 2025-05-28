@@ -8,5 +8,115 @@
         "StId": 124,
         "link": "janavi_khatri_001Profile.jpg",
         "Grade": "Cheating detected"
+    },
+    {
+        "Id": 2,
+        "Name": "janavi khatri",
+        "TotalMark": 0,
+        "Status": "Fail",
+        "Date": "2025-05-26",
+        "StId": 3,
+        "link": "janavi khatri_002Profile.jpg",
+        "Grade": "Cheating detected"
+    },
+    {
+        "Id": 3,
+        "Name": "janavi khatri",
+        "TotalMark": 10,
+        "Status": "Pass",
+        "Date": "2025-05-26",
+        "StId": 3,
+        "Link": "janavi khatri_003Profile.jpg",
+        "Grade": "Pass"
+    },
+    {
+        "Id": 4,
+        "Name": "janavi khatri",
+        "TotalMark": 0,
+        "Status": "Fail",
+        "Date": "2025-05-26",
+        "StId": 3,
+        "Link": "janavi khatri_004Profile.jpg",
+        "Grade": "Fail"
+    },
+    {
+        "Id": 5,
+        "Name": "janavi khatri",
+        "TotalMark": 0,
+        "Status": "Fail",
+        "Date": "2025-05-26",
+        "StId": 3,
+        "link": "janavi khatri_004Profile.jpg",
+        "Grade": "Cheating detected"
+    },
+    {
+        "Id": 6,
+        "Name": "janavi khatri",
+        "TotalMark": 0,
+        "Status": "Fail",
+        "Date": "2025-05-26",
+        "StId": 3,
+        "link": "janavi khatri_004Profile.jpg",
+        "Grade": "Cheating detected"
+    },
+    {
+        "Id": 7,
+        "Name": "janavi khatri",
+        "TotalMark": 0,
+        "Status": "Fail",
+        "Date": "2025-05-27",
+        "StId": 3,
+        "link": "janavi khatri_007Profile.jpg",
+        "Grade": "Cheating detected"
+    },
+    {
+        "Id": 8,
+        "Name": "janavi khatri",
+        "TotalMark": 0,
+        "Status": "Fail",
+        "Date": "2025-05-27",
+        "StId": 3,
+        "link": "janavi khatri_007Profile.jpg",
+        "Grade": "Cheating detected"
+    },
+    {
+        "Id": 9,
+        "Name": "janavi khatri",
+        "TotalMark": 10,
+        "Status": "Pass",
+        "Date": "2025-05-27",
+        "StId": 3,
+        "Link": "janavi khatri_007Profile.jpg",
+        "Grade": "Pass"
+    },
+    {
+        "Id": 10,
+        "Name": "janavi khatri",
+        "TotalMark": 0,
+        "Status": "Fail",
+        "Date": "2025-05-27",
+        "StId": 3,
+        "link": "janavi khatri_007Profile.jpg",
+        "Grade": "Cheating detected"
+    },
+    {
+        "Id": 11,
+        "Name": "janavi khatri",
+        "TotalMark": 1,
+        "Status": "Fail",
+        "Date": "2025-05-27",
+        "StId": 3,
+        "Link": "janavi khatri_007Profile.jpg",
+        "Grade": "Fail"
+    },
+    {
+        "Id": 12,
+        "Name": "janavi khatri",
+        "TotalMark": 10,
+        "Status": "Pass",
+        "Date": "2025-05-27",
+        "StId": 3,
+        "Link": "janavi khatri_012Profile.jpg",
+        "Grade": "Pass"
     }
 ]

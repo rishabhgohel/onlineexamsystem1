@@ -26,7 +26,8 @@ os.path.dirname("../templates")
 
 #Flak's Database Configuration
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'rishabh8001'  
+# app.config['MYSQL_PASSWORD'] = 'rishabh8001'  
+app.config['MYSQL_PASSWORD'] = 'MyNew330@sql'  
 app.config['MYSQL_DB'] = 'onlineexam'  
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['UPLOAD_FOLDER'] = 'uploads'  # Folder to save uploaded files
