@@ -49,7 +49,7 @@ CREATE TABLE IF NOT EXISTS students (
 -- Insert sample data into students table
 INSERT INTO students (Name, Email, Password, Role) VALUES
 ('rishabh', 'rishabh77@gmail.com', 'password123', 'ADMIN'),
-('sachin kumar', 'sachin1@gmail.com', 'password123', 'STUDENT'),
+('khushir', 'khushi558@gmail.com', 'password123', 'STUDENT'),
 ('janavi khatri', 'khatri@example.com', 'studentpass', 'STUDENT');
 
 SELECT * FROM students;
